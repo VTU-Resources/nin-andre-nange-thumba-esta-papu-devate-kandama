@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placement Java Tricks & Chaithra Profile</title>
+    <!-- Importing Bold & Creative Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Poppins:wght@300;400;600&family=Righteous&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- BOLD & CREATIVE CSS --- */
+        :root {
+            --bg-dark: #020c1b;
+            --bg-gradient: linear-gradient(135deg, #0a192f 0%, #112240 100%);
+            --glass-bg: rgba(17, 34, 64, 0.7);
+            --glass-border: rgba(100, 255, 218, 0.1);
+            --text-main: #e6f1ff;
+            --text-muted: #8892b0;
+            --accent: #64ffda;
+            --accent-glow: rgba(100, 255, 218, 0.5);
+            --pink-accent: #ff6495;
+            --nav-bg: rgba(10, 25, 47, 0.95);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(100, 255, 218, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255, 100, 149, 0.05) 0%, transparent 20%);
+            color: var(--text-main);
+            font-family: 'Poppins', sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
+        @keyframes glow { 0% { box-shadow: 0 0 5px var(--accent-glow); } 50% { box-shadow: 0 0 20px var(--accent-glow), 0 0 10px var(--accent); } 100% { box-shadow: 0 0 5px var(--accent-glow); } }
+        @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        @keyframes floatHeart { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-100px) scale(1.5); opacity: 0; } }
+
+        /* HEADER */
+        header {
+            padding: 20px;
+            text-align: center;
+            background: var(--nav-bg);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 100;
+        }
+        header h1 { 
+            font-family: 'Righteous', cursive; 
+            font-size: 1.8rem; 
+            background: linear-gradient(90deg, var(--accent), #fff, var(--accent));
+            background-size: 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textShine 3s linear infinite;
+        }
+        @keyframes textShine { to { background-position: 200%; } }
+
+        /* MAIN AREA */
+        main {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            padding-bottom: 90px;
+            scroll-behavior: smooth;
+        }
+        
+        /* SCROLLBAR CUSTOMIZATION */
+        main::-webkit-scrollbar { width: 6px; }
+        main::-webkit-scrollbar-track { background: var(--bg-dark); }
+        main::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+        /* GRID & CARDS */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            padding-bottom: 20px;
+        }
+        @media (min-width: 600px) { .grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); } }
+
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            padding: 25px;
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        .card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px -10px rgba(2, 12, 27, 0.7);
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 4px; height: 100%;
+            background: var(--accent);
+            opacity: 0.5;
+        }
+        .card:hover::before { opacity: 1; box-shadow: 0 0 10px var(--accent); }
+
+        .card h3 { 
+            color: #fff; 
+            font-family: 'Montserrat', sans-serif; 
+            font-size: 1.2rem; 
+            margin-bottom: 8px; 
+            font-weight: 700;
+        }
+        .trick-tag {
+            background: rgba(100, 255, 218, 0.15);
+            color: var(--accent);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 10px;
+            display: inline-block;
+            border: 1px solid rgba(100, 255, 218, 0.2);
+        }
+
+        /* DETAIL VIEW */
+        .detail-view {
+            display: none;
+            background: rgba(10, 25, 47, 0.98);
+            backdrop-filter: blur(20px);
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 200;
+            overflow-y: auto;
+            padding: 20px;
+            padding-bottom: 80px;
+            animation: fadeIn 0.3s ease-out;
+        }
+        .detail-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+        .back-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--glass-border);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+        .back-btn:hover { background: var(--accent); color: var(--bg-dark); }
+        
+        .code-block {
+            background: #011627;
+            padding: 20px;
+            border-radius: 12px;
+            overflow-x: auto;
+            color: #d6deeb;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            margin: 20px 0;
+            border: 1px solid #1e3a63;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+        }
+        
+        .btn-run {
+            background: linear-gradient(90deg, var(--accent), #00bfa5);
+            color: #000;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+            box-shadow: 0 4px 15px rgba(100, 255, 218, 0.4);
+            transition: 0.3s;
+        }
+        .btn-run:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(100, 255, 218, 0.6); }
+
+        /* --- CHAITHRA PROFILE BLOCK --- */
+        .profile-view {
+            display: none;
+            text-align: center;
+            padding-top: 10px;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .avatar-container {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 20px;
+        }
+        .avatar {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #ff6495, #64ffda);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            color: #fff;
+            font-family: 'Righteous', cursive;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 0 30px rgba(255, 100, 149, 0.4);
+            animation: float 6s ease-in-out infinite;
+        }
+        .avatar-ring {
+            position: absolute;
+            top: -10px; left: -10px; right: -10px; bottom: -10px;
+            border-radius: 50%;
+            border: 2px dashed var(--accent);
+            animation: spin 10s linear infinite;
+            opacity: 0.6;
+        }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .profile-name { 
+            font-family: 'Montserrat', sans-serif; 
+            font-weight: 900; 
+            font-size: 2.5rem; 
+            background: linear-gradient(to right, #fff, var(--pink-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+        }
+        .profile-role { color: var(--accent); font-weight: 600; letter-spacing: 3px; text-transform: uppercase; font-size: 0.9rem; margin-bottom: 30px; }
+
+        /* Stats in Glass Cards */
+        .stats-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .stat-item {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(5px);
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            min-width: 100px;
+            transition: 0.3s;
+        }
+        .stat-item:hover { transform: translateY(-5px); background: rgba(255,255,255,0.1); border-color: var(--pink-accent); }
+        .stat-item h2 { font-size: 1.8rem; color: #fff; font-family: 'Montserrat', sans-serif; }
+        .stat-item p { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+
+        /* New Feature: Interactive Buttons */
+        .interactive-section {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .fun-btn {
+            background: var(--bg-card);
+            color: #fff;
+            border: 1px solid var(--accent);
+            padding: 12px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .fun-btn.love { border-color: var(--pink-accent); color: var(--pink-accent); }
+        .fun-btn.love:active { transform: scale(0.95); background: rgba(255, 100, 149, 0.1); }
+        .fun-btn:hover { background: rgba(100, 255, 218, 0.1); }
+
+        /* New Feature: Timeline */
+        .timeline {
+            text-align: left;
+            margin: 30px 10px;
+            padding-left: 20px;
+            border-left: 2px solid var(--glass-border);
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+            padding-left: 20px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -26px; top: 5px;
+            width: 14px; height: 14px;
+            background: var(--bg-dark);
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+        }
+        .timeline-date { color: var(--accent); font-size: 0.8rem; font-weight: bold; }
+        .timeline-content { background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px; margin-top: 5px; }
+
+        .compliment-box {
+            margin: 20px;
+            padding: 25px;
+            background: linear-gradient(135deg, rgba(100,255,218,0.1), rgba(255,100,149,0.1));
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            font-style: italic;
+            font-size: 1.1rem;
+            position: relative;
+        }
+        .compliment-box::before { content: '"'; font-size: 4rem; position: absolute; top: -20px; left: 10px; opacity: 0.2; color: var(--accent); }
+
+        /* NAV */
+        .bottom-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 400px;
+            height: 65px;
+            background: rgba(17, 34, 64, 0.9);
+            backdrop-filter: blur(15px);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-radius: 40px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 150;
+        }
+        .nav-item {
+            color: var(--text-muted);
+            text-align: center;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            width: 50%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 40px;
+        }
+        .nav-item.active { color: #fff; background: rgba(255,255,255,0.05); }
+        .nav-icon { font-size: 1.4rem; display: block; margin-bottom: 2px; transition: 0.3s; }
+        .nav-item.active .nav-icon { transform: translateY(-3px); color: var(--accent); }
+
+        /* Floating Hearts Container */
+        #hearts-container { position: fixed; bottom: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; overflow: hidden; }
+        .heart { position: absolute; bottom: 100px; font-size: 2rem; animation: floatHeart 2s linear forwards; color: #ff6495; }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1 id="page-title">Placement Java Tricks</h1>
+    </header>
+
+    <main>
+        
+        <div id="home-view" class="grid">
+            <!-- Cards populated by JS -->
+        </div>
+
+        <div id="profile-view" class="profile-view">
+            <div class="avatar-container">
+                <div class="avatar-ring"></div>
+                <div class="avatar">C</div>
+            </div>
+            
+            <h1 class="profile-name">Chaithra C</h1>
+            <p class="profile-role">My Queen & Motivation</p>
+
+            <!-- New Feature: Status/Mood -->
+            <div style="margin-bottom: 20px; font-size: 0.9rem; color: #fff; background: rgba(255,255,255,0.1); display: inline-block; padding: 5px 15px; border-radius: 20px;">
+                ✨ Current Mood: <span id="mood-text" style="color:var(--accent)">Radiant</span>
+            </div>
+
+            <div class="stats-container">
+                <div class="stat-item">
+                    <h2 class="counter" data-target="100">0</h2>
+                    <p>Happiness %</p>
+                </div>
+                <div class="stat-item">
+                    <h2 class="counter" data-target="365">0</h2>
+                    <p>Days Loved</p>
+                </div>
+                <div class="stat-item">
+                    <h2 class="counter" data-target="1000">0</h2>
+                    <p>Luck Level</p>
+                </div>
+            </div>
+
+            <div class="compliment-box" id="daily-compliment">
+                "You are the semicolon to my code; without you, everything falls apart. You are my best output."
+            </div>
+
+            <!-- New Feature: Interactive Fun -->
+            <div class="interactive-section">
+                <button class="fun-btn love" onclick="sendLove()">
+                    ❤️ Send Love
+                </button>
+                <button class="fun-btn" onclick="newCompliment()">
+                    🎲 New Compliment
+                </button>
+            </div>
+
+            <!-- New Feature: Memory Timeline -->
+            <h3 style="margin-top: 30px; font-family: 'Montserrat'; color: #fff;">Our Journey</h3>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">Day 1</div>
+                    <div class="timeline-content">The day luck entered my life.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Today</div>
+                    <div class="timeline-content">Celebrating you, every single compile time.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Future</div>
+                    <div class="timeline-content">Infinite loops of happiness together.</div>
+                </div>
+            </div>
+            
+            <div style="margin-top:40px; color: var(--text-muted); font-size: 0.8rem; margin-bottom: 20px;">
+                Nan Muddina Henthi ❤️
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Detail Modal -->
+    <div id="detail-view" class="detail-view">
+        <div class="detail-header">
+            <button class="back-btn" onclick="closeDetail()">← Back</button>
+            <!-- <span style="color: var(--text-muted); font-size: 0.8rem;">Java Snippet</span> -->
+        </div>
+        
+        <h2 id="detail-title" style="margin-bottom: 10px; color: #fff; font-family: 'Montserrat'; font-size: 1.5rem;">Title</h2>
+        <div id="detail-trick" class="trick-tag" style="font-size: 0.9rem; padding: 10px; margin-bottom: 20px; display: block; border-left: 3px solid var(--accent);">Trick: ...</div>
+        
+        <pre class="code-block"><code id="detail-code">
+// Code goes here
+        </code></pre>
+
+        <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+            <button class="btn btn-run" style="flex:1; padding: 15px; border-radius: 8px; cursor: pointer;" onclick="runCode()">▶ Run Code</button>
+            <a href="https://www.jdoodle.com/online-java-compiler/" target="_blank" style="flex:1; text-align:center; padding: 15px; background: rgba(255,255,255,0.05); color: #fff; text-decoration: none; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); font-weight: bold; display: flex; align-items: center; justify-content: center;">Compiler ↗</a>
+        </div>
+
+        <div id="output-area" style="background: #000; border: 1px solid #333; padding: 15px; border-radius: 8px; font-family: monospace; display: none; color: #0f0;">
+            <span style="color: #666; display: block; margin-bottom: 5px; font-size: 0.8rem;">TERMINAL OUTPUT:</span>
+            <div id="output-text" style="white-space: pre-wrap;">> _</div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="nav-item active" onclick="switchTab('home', this)">
+            <span class="nav-icon">⚡</span>
+            Tricks
+        </div>
+        <div class="nav-item" onclick="switchTab('profile', this)">
+            <span class="nav-icon">❤️</span>
+            Chaithra
+        </div>
+    </nav>
+
+    <!-- Container for floating hearts -->
+    <div id="hearts-container"></div>
+
+    <script>
+        // --- DATA FROM APPROVED MATERIAL.PDF ---
+        const data = [
+            // --- Part 1: String Programs ---
+            {
+                id: 1,
+                title: "1. Reverse Only Letters",
+                trick: "Use two pointers. Swap if both are letters, otherwise skip.",
+                output: "Input: ab-cd\nOutput: dc-ba",
+                code: `public class Main {
+    public static void main(String[] args) {
+        String s = "ab-cd";
+        System.out.println("Input: "+ s + "\\nOutput: " + reverseOnlyLetters(s));
+    }
+    public static String reverseOnlyLetters (String s) {
+        char[] c = s.toCharArray();
+        for (int i=0, j=c.length - 1; i < j; )
+            if (!Character.isLetter (c[i])) i++;
+            else if (!Character.isLetter (c[j])) j--;
+            else { char t=c[i]; c[i++]=c[j]; c[j--]=t; }
+        return new String(c);
+    }
+}`
+            },
+            {
+                id: 2,
+                title: "2. Reverse Words (Stack Method)",
+                trick: "Split by space, push to Stack, pop to reverse.",
+                output: "Input: \" the sky is blue\"\nOutput: \"blue is sky the\"",
+                code: `import java.util.*;
+public class Main {
+    public static void main(String[] args) {
+        String s = " the sky is blue";
+        System.out.println("Input: \\""+s+"\\"");
+        System.out.println("Output: \\"" + reverseWords (s) + "\\"");
+    }
+    public static String reverseWords (String s) {
+        Stack<String> stack = new Stack<>();
+        for (String w : s.trim().split("\\\\s+")) stack.push(w);
+        StringBuilder sb = new StringBuilder();
+        while (!stack.isEmpty()) sb.append(stack.pop()).append(" ");
+        return sb.toString().trim();
+    }
+}`
+            },
+            {
+                id: 3,
+                title: "3. Reverse Vowels",
+                trick: "Swap pointers only if both point to vowels.",
+                output: "Input: hello\nOutput: holle",
+                code: `public class Main {
+    public static void main(String[] args) {
+        String s = "hello";
+        System.out.println("Input: " + s + "\\nOutput: " + reverseVowels(s));
+    }
+    public static String reverseVowels (String s) {
+        char[] c = s.toCharArray();
+        String v = "aeiouAEIOU";
+        for (int i=0, j = c.length - 1; i < j; )
+            if (v.indexOf(c[i]) < 0) i++;
+            else if (v.indexOf(c[j]) < 0) j--;
+            else { char t=c[i]; c[i++] = c[j]; c[j--]=t; }
+        return new String(c);
+    }
+}`
+            },
+            {
+                id: 4,
+                title: "4. Valid Anagram (Sort Method)",
+                trick: "Sort both strings. If they are equal, return true.",
+                output: "Checking: anagram, nagaram\nOutput: true",
+                code: `import java.util.*;
+public class Main {
+    public static void main(String[] args) {
+        String s = "anagram", t = "nagaram";
+        System.out.println("Checking: " + s + ", " + t);
+        System.out.println("Output: " + isAnagram(s, t));
+    }
+    public static boolean isAnagram (String s, String t) {
+        char[] a = s.toCharArray();
+        char[] b = t.toCharArray();
+        Arrays.sort(a);
+        Arrays.sort(b);
+        return Arrays.equals(a, b);
+    }
+}`
+            },
+            {
+                id: 5,
+                title: "5. First Unique Character",
+                trick: "Count letters. Find first letter with count == 1.",
+                output: "Input: leetcode\nOutput Index: 0",
+                code: `public class Main {
+    public static void main(String[] args) {
+        String s = "leetcode";
+        System.out.println("Input: "+s);
+        System.out.println("Output Index: " + firstUniqChar(s));
+    }
+    public static int firstUniqChar (String s) {
+        int[] cnt = new int[26];
+        for (char c : s.toCharArray()) cnt[c - 'a']++;
+        for (int i=0; i < s.length(); i++) {
+            if (cnt[s.charAt(i) - 'a'] == 1) return i;
+        }
+        return -1;
+    }
+}`
+            },
+            {
+                id: 6,
+                title: "6. Max Difference Odd/Even Frequency",
+                trick: "Calculate Max Odd Count - Min Even Count.",
+                output: "Input: aaabb\nOutput: 1",
+                code: `import java.util.*;
+public class Main {
+    public static void main(String[] args) {
+        String s = "aaabb"; // a=3 (odd), b=2 (even)
+        System.out.println("Input: " + s);
+        System.out.println("Output: " + maxDiffOddEven(s));
+    }
+    public static int maxDiffOddEven (String s) {
+        int[] cnt = new int[26];
+        for (char c : s.toCharArray()) cnt [c - 'a']++;
+        int odd = Integer.MIN_VALUE, even = Integer.MAX_VALUE;
+
+        for (int c : cnt) {
+            if (c == 0) continue;
+            if (c % 2 != 0) odd = Math.max(odd, c);
+            else even = Math.min(even, c);
+        }
+        return odd - even;
+    }
+}`
+            },
+            {
+                id: 7,
+                title: "7. Group Anagrams",
+                trick: "Use Map. Key is the sorted string.",
+                output: "Output: [[eat, tea, ate], [bat], [tan, nat]]",
+                code: `import java.util.*;
+public class Main {
+    public static void main(String[] args) {
+        String[] strs = {"eat", "tea", "tan", "ate", "nat", "bat"};
+        System.out.println("Output: " + groupAnagrams(strs));
+    }
+    public static List<List<String>> groupAnagrams (String[] strs) {
+        Map<String, List<String>> map = new HashMap<>();
+        for (String s: strs) {
+            char[] ch = s.toCharArray();
+            Arrays.sort(ch);
+            String key = new String(ch);
+            map.putIfAbsent (key, new ArrayList<>());
+            map.get(key).add(s);
+        }
+        return new ArrayList<>(map.values());
+    }
+}`
+            },
+            {
+                id: 8,
+                title: "8. Keyboard Row",
+                trick: "Check if all chars in word come from same row string.",
+                output: "Output: [Alaska, Dad]",
+                code: `import java.util.*;
+public class Main {
+    public static void main(String[] args) {
+        String[] w = {"Hello", "Alaska", "Dad", "Peace"};
+        System.out.println("Output: " + Arrays.toString(findWords (w)));
+    }
+    // Logic: Check if word matches only one row pattern (case-insensitive)
+    public static String[] findWords (String[] w) {
+        return Arrays.stream(w)
+            .filter(s -> s.toLowerCase().matches("^[qwertyuiop]*$|^[asdfghjkl]*$|^[zxcvbnm]*$"))
+            .toArray(String[]::new);
+    }
+}`
+            },
+            {
+                id: 9,
+                title: "9. Add Binary",
+                trick: "Use BigInteger for simple conversion/addition (or long-form carry logic).",
+                output: "11+1=100",
+                code: `import java.math.*;
+public class Main {
+    public static void main(String[] args) {
+        String a = "11", b = "1";
+        System.out.println(a + "+" + b + "=" + addBinary(a, b));
+    }
+    public static String addBinary (String a, String b) {
+        return new BigInteger (a, 2).add(new BigInteger (b, 2)).toString(2);
+    }
+}`
+            },
+            {
+                id: 10,
+                title: "10. Add Strings",
+                trick: "Same as Add Binary, but use Base 10 (Reverse and sum with carry).",
+                output: "11+123=134",
+                code: `public class Main {
+    public static void main(String[] args) {
+        System.out.println("11+123=" + addStrings("11", "123"));
+    }
+    public static String addStrings (String num1, String num2) {
+        StringBuilder sb = new StringBuilder();
+        int i = num1.length()-1, j = num2.length()-1, carry = 0;
+        while (i >= 0 || j >= 0 || carry > 0) {
+            int d1 = (i >= 0) ? num1.charAt(i--) - '0': 0;
+            int d2 = (j >= 0) ? num2.charAt(j--) - '0': 0;
+            int sum = d1 + d2 + carry;
+            sb.append(sum % 10);
+            carry = sum / 10;
+        }
+        return sb.reverse().toString();
+    }
+}`
+            },
+            // --- Part 2: Linked List Programs ---
+            {
+                id: 11,
+                title: "11. Reverse Linked List",
+                trick: "Prev, Curr, Next Pointers for iterative reversal.",
+                output: "Output: 3 2 1 ",
+                code: `public class Main {
+    static class ListNode { int val; ListNode next; ListNode (int x) { val = x; } }
+
+    public static void main(String[] args) {
+        ListNode head = new ListNode (1); head.next = new ListNode (2); head.next.next = new ListNode (3);
+        System.out.print("Output: ");
+        for (ListNode r = reverseList (head); r != null; r = r.next) System.out.print(r.val + " ");
+    }
+    public static ListNode reverseList (ListNode curr) {
+        ListNode prev = null;
+        while (curr != null) {
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
+}`
+            },
+            {
+                id: 12,
+                title: "12. Rotate List",
+                trick: "Form a circle. Find (length - k % length)th node as new tail.",
+                output: "Output: 3 1 2 ",
+                code: `public class Main {
+    static class ListNode { int val; ListNode next; ListNode(int x) { val = x; } }
+
+    public static void main(String[] args) {
+        ListNode h = new ListNode (1); h.next = new ListNode (2); h.next.next = new ListNode (3);
+        System.out.print("Output: ");
+        for (ListNode r = rotateRight(h, 1); r != null; r = r.next) System.out.print(r.val + " ");
+    }
+    public static ListNode rotateRight (ListNode h, int k) {
+        if (h == null || h.next == null) return h;
+        ListNode t = h; int l = 1;
+        while (t.next != null) { t = t.next; l++; }
+        t.next = h; // Form the circle
+        for (int i = l - k % l; i > 0; i--) t = t.next; // t is now the new tail
+        h = t.next; // New head is t.next
+        t.next = null; // Break the circle
+        return h;
+    }
+}`
+            },
+            {
+                id: 13,
+                title: "13. Has Cycle",
+                trick: "Slow(1 step) and Fast(2 steps) pointers. If they meet, cycle exists.",
+                output: "Has Cycle: true",
+                code: `public class Main {
+    static class ListNode { int val; ListNode next; ListNode(int x) { val = x; } }
+
+    public static void main(String[] args) {
+        ListNode head = new ListNode (1);
+        head.next = new ListNode (2);
+        head.next.next = head; // Cycle back to 1
+        System.out.println("Has Cycle: "+ hasCycle(head));
+    }
+    public static boolean hasCycle (ListNode head) {
+        ListNode slow = head, fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow == fast) return true;
+        }
+        return false;
+    }
+}`
+            },
+            {
+                id: 14,
+                title: "14. Linked List Cycle II",
+                trick: "Find collision (S == F). Reset one pointer (T = Head). Move S and T one step; meeting point is start.",
+                output: "Cycle starts at value: 2",
+                code: `public class Main {
+    static class ListNode { int val; ListNode next; ListNode (int x) { val = x; } }
+
+    public static void main(String[] args) {
+        ListNode h = new ListNode (3), n = new ListNode (2);
+        h.next = n; n.next = new ListNode(0); n.next.next = new ListNode (-4);
+        n.next.next.next = n; // Cycle back to node 2
+        ListNode r = detectCycle(h);
+        System.out.println("Cycle starts at value: " + (r != null? r.val: "No Cycle"));
+    }
+    public static ListNode detectCycle (ListNode h) {
+        ListNode s = h, f = h;
+        while (f != null && f.next != null) {
+            s = s.next;
+            f = f.next.next;
+            if (s == f) {
+                ListNode t = h;
+                while(t != s) {
+                    t = t.next;
+                    s = s.next;
+                }
+                return t; // Meeting point is the start of the cycle
+            }
+        }
+        return null;
+    }
+}`
+            },
+            {
+                id: 15,
+                title: "15. Palindrome Linked List (Stack Method)",
+                trick: "Push all to Stack. Iterate list again and compare with Pop.",
+                output: "Is Palindrome: true",
+                code: `import java.util.*;
+public class Main {
+    static class ListNode { int val; ListNode next; ListNode (int x) { val = x; } }
+
+    public static void main(String[] args) {
+        ListNode head = new ListNode (1); head.next = new ListNode (2); head.next.next = new ListNode (2); head.next.next.next = new ListNode (1);
+        System.out.println("Is Palindrome: " + isPalindrome (head));
+    }
+    public static boolean isPalindrome (ListNode head) {
+        Stack<Integer> stack = new Stack<>();
+        ListNode curr = head;
+        while (curr != null) { stack.push(curr.val); curr = curr.next; }
+        curr = head;
+        while (curr != null) {
+            if (curr.val != stack.pop()) return false;
+            curr = curr.next;
+        }
+        return true;
+    }
+}`
+            },
+            {
+                id: 16,
+                title: "16. Intersection of Linked Lists (Set Method)",
+                trick: "Add all nodes of List A to a Set. Iterate List B and check Set membership.",
+                output: "Intersection Val: 8",
+                code: `import java.util.*;
+public class Main {
+    static class ListNode { int val; ListNode next; ListNode (int x) { val = x; } }
+
+    public static void main(String[] args) {
+        ListNode common = new ListNode (8);
+        ListNode headA = new ListNode (1); headA.next = common;
+        ListNode headB = new ListNode (2); headB.next = common;
+        System.out.println("Intersection Val: " + getIntersectionNode (headA, headB).val);
+    }
+    public static ListNode getIntersectionNode (ListNode headA, ListNode headB) {
+        HashSet<ListNode> set = new HashSet<>();
+        while (headA != null) { set.add(headA); headA = headA.next; }
+        while (headB != null) {
+            if (set.contains (headB)) return headB;
+            headB = headB.next;
+        }
+        return null;
+    }
+}`
+            },
+            {
+                id: 17,
+                title: "17. Odd Even Linked List",
+                trick: "Create Odd list and Even list separately. Attach Even head to Odd tail.",
+                output: "Output: 1 3 2 ",
+                code: `public class Main {
+    static class ListNode { int val; ListNode next; ListNode (int x) { val = x; } }
+
+    public static void main(String[] args) {
+        ListNode h = new ListNode (1); h.next = new ListNode (2); h.next.next = new ListNode (3);
+        System.out.print("Output: ");
+        for (ListNode r = oddEvenList(h); r != null; r = r.next) System.out.print(r.val + " ");
+    }
+    public static ListNode oddEvenList (ListNode h) {
+        if (h == null) return null;
+        ListNode o = h;
+        ListNode e = h.next;
+        ListNode eHead = e;
+
+        while (e != null && e.next != null) {
+            o.next = e.next;
+            o = o.next;
+            e.next = o.next;
+            e = e.next;
+        }
+        o.next = eHead;
+        return h;
+    }
+}`
+            },
+            {
+                id: 18,
+                title: "18. Reorder List (ArrayList Method)",
+                trick: "Put nodes in List. Link index 0 -> last -> 1 -> last-1... (Two Pointers on List)",
+                output: "Output: 1 4 2 3 ",
+                code: `import java.util.*;
+public class Main {
+    static class ListNode { int val; ListNode next; ListNode (int x) { val = x; } }
+
+    public static void main(String[] args) {
+        ListNode h = new ListNode (1); h.next = new ListNode (2); h.next.next = new ListNode (3); h.next.next.next = new ListNode (4);
+        System.out.print("Output: ");
+        reorderList(h);
+        for (; h != null; h = h.next) System.out.print(h.val + " ");
+    }
+    public static void reorderList (ListNode h) {
+        List<ListNode> l = new ArrayList<>();
+        for (ListNode c = h; c != null; c = c.next) l.add(c);
+
+        int i = 0, j = l.size() - 1;
+        while (i < j) {
+            l.get(i).next = l.get(j);
+            if (++i == j) break;
+            l.get(j--).next = l.get(i);
+        }
+        l.get(i).next = null;
+    }
+}`
+            },
+            {
+                id: 19,
+                title: "19. Add Two Numbers",
+                trick: "Sum digits plus carry from tail to head (LSD first).",
+                output: "Output: 7 0 1 ",
+                code: `public class Main {
+    static class ListNode { int val; ListNode next; ListNode (int x) { val = x; } }
+
+    public static void main(String[] args) {
+        ListNode l1 = new ListNode (2), l2 = new ListNode (5); // 42 + 65 = 107
+        l1.next = new ListNode (4); l2.next = new ListNode (6);
+        ListNode r = addTwoNumbers (l1, l2);
+        System.out.print("Output: ");
+        for (; r != null; r = r.next) System.out.print(r.val + " ");
+    }
+    public static ListNode addTwoNumbers (ListNode l1, ListNode l2) {
+        ListNode d = new ListNode (0), c = d;
+        for (int r = 0; l1 != null || l2 != null || r > 0; r /= 10, c = c.next) {
+            if (l1 != null) { r += l1.val; l1 = l1.next; }
+            if (l2 != null) { r += l2.val; l2 = l2.next; }
+            c.next = new ListNode(r % 10);
+        }
+        return d.next;
+    }
+}`
+            },
+            {
+                id: 20,
+                title: "20. Merge Two Sorted Lists",
+                trick: "Compare heads. Recursively append smaller node to result list.",
+                output: "Output: 1 2 3 4 ",
+                code: `public class Main {
+    static class ListNode { int val; ListNode next; ListNode(int x) { val = x; } }
+
+    public static void main(String[] args) {
+        ListNode l1 = new ListNode (1), l2 = new ListNode (2);
+        l1.next = new ListNode (3); l2.next = new ListNode (4);
+        System.out.print("Output: ");
+        for (ListNode r = mergeTwoLists (l1, l2); r != null; r = r.next) System.out.print(r.val + " ");
+    }
+    public static ListNode mergeTwoLists (ListNode l1, ListNode l2) {
+        if (l1 == null) return l2;
+        if (l2 == null) return l1;
+        
+        if (l1.val < l2.val) { 
+            l1.next = mergeTwoLists (l1.next, l2); 
+            return l1; 
+        } else {
+            l2.next = mergeTwoLists (l1, l2.next); 
+            return l2;
+        }
+    }
+}`
+            }
+        ];
+
+        // --- APP LOGIC ---
+
+        const homeView = document.getElementById('home-view');
+        const detailView = document.getElementById('detail-view');
+        const profileView = document.getElementById('profile-view');
+        let currentProblemOutput = "";
+
+        // Initialize Home
+        function init() {
+            // Add a staggered delay to cards for animation
+            data.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.style.animationDelay = `${index * 0.05}s`;
+                card.onclick = () => openDetail(item);
+                card.innerHTML = `
+                    <h3>${item.title}</h3>
+                    <div class="trick-tag">Trick: ${item.trick.substring(0, 50)}${item.trick.length > 50 ? '...' : ''}</div>
+                `;
+                homeView.appendChild(card);
+            });
+        }
+
+        // Open Detail Modal
+        function openDetail(item) {
+            document.getElementById('detail-title').innerText = item.title;
+            document.getElementById('detail-trick').innerText = "Trick: " + item.trick;
+            document.getElementById('detail-code').innerText = item.code;
+            currentProblemOutput = item.output;
+            
+            // Reset Output
+            document.getElementById('output-area').style.display = 'none';
+            document.getElementById('output-text').innerText = "";
+
+            // Show View
+            detailView.style.display = 'block';
+        }
+
+        function closeDetail() {
+            detailView.style.display = 'none';
+        }
+
+        // Simulate Run
+        function runCode() {
+            const outArea = document.getElementById('output-area');
+            const outText = document.getElementById('output-text');
+            
+            outArea.style.display = 'block';
+            outText.innerText = "> Compiling...";
+            
+            setTimeout(() => {
+                outText.innerText = "> Running...";
+                setTimeout(() => {
+                    outText.innerHTML = `<span style="color:var(--accent)">Success! Build complete.</span>\n> Execution Results:\n${currentProblemOutput.replace(/\\n/g, '\n')}`;
+                }, 800);
+            }, 800);
+        }
+
+        // Tab Switching
+        function switchTab(tabName, el) {
+            // Update Nav UI
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            el.classList.add('active');
+
+            // Hide all views
+            homeView.style.display = 'none';
+            profileView.style.display = 'none';
+            detailView.style.display = 'none';
+            
+            // Update Title
+            const titleEl = document.getElementById('page-title');
+            titleEl.innerText = tabName === 'home' ? 'Placement Java Tricks' : 'Chaithra Profile';
+
+            if(tabName === 'home') {
+                homeView.style.display = 'grid';
+            } else {
+                profileView.style.display = 'block';
+                runCounters();
+            }
+        }
+
+        // Counter Animation
+        function runCounters() {
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                counter.innerText = '0';
+                const target = +counter.getAttribute('data-target');
+                const inc = target / 40; // Faster speed
+
+                const updateCount = () => {
+                    const count = +counter.innerText;
+                    if(count < target) {
+                        counter.innerText = Math.ceil(count + inc);
+                        setTimeout(updateCount, 25);
+                    } else {
+                        counter.innerText = target + (target === 100 ? '%' : '+');
+                    }
+                };
+                updateCount();
+            });
+        }
+
+        // Chaithra Feature: Floating Hearts
+        function sendLove() {
+            const container = document.getElementById('hearts-container');
+            for(let i=0; i<5; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerText = '❤️';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = (Math.random() * 1 + 1.5) + 's';
+                container.appendChild(heart);
+
+                // Remove from DOM after animation
+                setTimeout(() => {
+                    heart.remove();
+                }, 2000);
+            }
+        }
+
+        // Chaithra Feature: New Compliment
+        const compliments = [
+            "You are the CSS to my HTML.",
+            "You are my favorite notification.",
+            "My world compiles because of you.",
+            "You are the loop in my life that I never want to break.",
+            "Exception: You are too cute to handle!",
+            "You're the root of my happiness tree."
+        ];
+        function newCompliment() {
+            const box = document.getElementById('daily-compliment');
+            const random = compliments[Math.floor(Math.random() * compliments.length)];
+            box.style.opacity = 0;
+            setTimeout(() => {
+                box.innerText = `"${random}"`;
+                box.style.opacity = 1;
+            }, 300);
+        }
+
+        // Start App
+        init();
+
+    </script>
+</body>
+</html>
